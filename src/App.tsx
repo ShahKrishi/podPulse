@@ -1,12 +1,13 @@
 import './App.css'
-
-import SignUpPage from './pages/signupPage/SignupPage'
+import UpcomingEpisode from './components/liveOrUpcoming/UpcomingEpisode'
+// import HomePage from './pages/homePage/HomePage'
 
 function App() {
 
   return (
     <>
-      <SignUpPage />
+      {/* <HomePage /> */}
+      <UpcomingEpisode />
     </>
   )
 }
