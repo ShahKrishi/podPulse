@@ -1,0 +1,41 @@
+.yellowCard {
+    height: 350px;
+    width: 400px;
+    background: #FFCD45;
+    border: 2px solid black;
+    border-radius: 20px;
+    margin: 40px;
+}
+
+.yellowCard img {
+    border-radius: 8px;
+    height: 180px;
+    width: 355px;
+    margin: 20px;
+    display: inline-block;
+}
+
+.title {
+    margin: 20px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 20px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background: #FFFFFF;
+
+    img {
+        height: 20px;
+        width: 20px;
+    }
+
+    span {
+        font-size: 16px;
+    }
+}
