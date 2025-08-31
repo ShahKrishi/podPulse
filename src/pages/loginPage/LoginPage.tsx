@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
 import LoginImage from "../../assets/images/login-img.png";
 import styles from './LoginPage.module.scss';
+import { useLoginMutation } from '../../utils/services/AuthApi';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const [login, { isLoading, error }] = useLoginMutation();
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log({ email, password });
+        try {
+            const result = await login({ email, password }).unwrap();
+
+            console.log(result);
+            if (result?.role === "Admin") {
+                navigate('/home');
+            } // else if (result?.role === "User") {
+            //     navigate('/home');
+            // } //else {
+            //("Unauthorized role or missing permissions.");
+            //}
+
+        } catch (err) {
+            console.error('Login failed:', err);
+        }
     };
+
 
     return (
         <div className={styles.loginContainer}>
@@ -33,7 +53,12 @@ const LoginPage: React.FC = () => {
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <button type="submit">Login</button>
+                    {/* <button type="submit">Login</button> */}
+                    {error && <p className={styles.error}>Login failed. Please try again.</p>}
+
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
                 </form>
             </div>
 
