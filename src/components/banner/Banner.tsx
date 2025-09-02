@@ -1,10 +1,10 @@
-// import BannerImg from '../../assets/images/banner.png'
+import BannerImg from '../../assets/images/banner.png'
 
 
 const Banner = () => {
     return (
         <div>
-            {/* <img src={BannerImg} alt="" /> */}
+            <img src={BannerImg} alt="" />
         </div>
     );
 };

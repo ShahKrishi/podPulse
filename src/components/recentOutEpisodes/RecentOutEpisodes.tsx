@@ -11,7 +11,7 @@ const RecentOutEpisodes: React.FC = () => {
                 title="Beach Vibes"
                 by="me"
                 on="13th May 2025"
-                description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.'
+                description='desc me'
                 category='fresh'
             />
             <Polaroid
@@ -19,7 +19,7 @@ const RecentOutEpisodes: React.FC = () => {
                 title="City Nights"
                 by="you"
                 on="15th May 2025"
-                description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.'
+                description='desc me'
                 category='tomatoes'
             />
 
@@ -28,7 +28,7 @@ const RecentOutEpisodes: React.FC = () => {
                 title="Beach Vibes"
                 by="me"
                 on="13th May 2025"
-                description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.'
+                description='desc me'
                 category='fresh'
             />
             <Polaroid
@@ -36,7 +36,7 @@ const RecentOutEpisodes: React.FC = () => {
                 title="City Nights"
                 by="you"
                 on="15th May 2025"
-                description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.'
+                description='desc me'
                 category='tomatoes'
             />
         </div>
