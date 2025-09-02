@@ -13,10 +13,21 @@ const NavbarComp: React.FC = () => {
 
             <div className={styles.links}>
                 <Link to="/">Home</Link>
-                <Link to="/about">About</Link>
-                <Link to="/services">Services</Link>
-                <Link to="/contact">Contact</Link>
-                <CustomButton backgroundColor='#02C7AD' fontColor='#fff'>Login</CustomButton>
+                <Link to="/">About</Link>
+                <Link to="/">Services</Link>
+                <Link to="/">Contact</Link>
+                <CustomButton
+                    variant="contained"
+                    onClick={() => alert('Custom button clicked!')}
+                    fontColor="#000"
+                    backgroundColor='#02C7AD'
+                    size="1rem"
+                    borderRadius="4px"
+                    disabled={false}
+                >
+                    Login
+                </CustomButton>
+
             </div>
         </nav>
     );
