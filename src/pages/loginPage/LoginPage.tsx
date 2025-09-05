@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LoginImage from "../../assets/images/login-img.png";
 import styles from './LoginPage.module.scss';
 import { useLoginMutation } from '../../utils/services/AuthApi';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -18,10 +18,10 @@ const LoginPage: React.FC = () => {
 
             console.log(result);
             if (result?.role === "Admin") {
-                navigate('/home');
-            } // else if (result?.role === "User") {
-            //     navigate('/home');
-            // } //else {
+                navigate('/admin-dashboard');
+            } else if (result?.role === "User") {
+                navigate('/');
+            } //else {
             //("Unauthorized role or missing permissions.");
             //}
 
@@ -53,12 +53,20 @@ const LoginPage: React.FC = () => {
                         required
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    {/* <button type="submit">Login</button> */}
                     {error && <p className={styles.error}>Login failed. Please try again.</p>}
 
                     <button type="submit" disabled={isLoading}>
                         {isLoading ? 'Logging in...' : 'Login'}
                     </button>
+
+                    {/* <div>
+                        <span>Don't have an account </span><button type='submit' onClick={() => { navigate('/register') }}> Sign Up </button>
+                    </div> */}
+                    <div>
+                        <span>Don't have an account? </span>
+                        <Link to="/register" className={styles.signUpLink}>Sign Up</Link>
+                    </div>
+
                 </form>
             </div>
 

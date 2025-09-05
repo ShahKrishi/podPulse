@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import SignupImage from '../../assets/images/login-img.png';
 import styles from './SignupPage.module.scss';
 import { useRegisterMutation } from '../../utils/services/AuthApi';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpPage: React.FC = () => {
     const [firstName, setFirstName] = useState('');
@@ -10,6 +11,7 @@ const SignUpPage: React.FC = () => {
     const [password, setPassword] = useState('');
 
     const [signup, { isLoading }] = useRegisterMutation();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -22,8 +24,9 @@ const SignUpPage: React.FC = () => {
                 password,
             }).unwrap();
 
-            console.log('Signup successful:', result);
-            alert('Signup successful!');
+            if (result) {
+                navigate('/login');
+            }
 
         } catch (err: any) {
             console.error('Signup failed:', err);
