@@ -13,6 +13,8 @@ interface DialogueBoxProps {
   closeBtnLabel?: string;
   closeOnClick?: () => void;
   closeBtnVariant?: "contained" | "outlined" | "text";
+  width?: string | number;
+  height?: string | number;
 }
 
 const DialogueBox: React.FC<DialogueBoxProps> = ({
@@ -26,13 +28,15 @@ const DialogueBox: React.FC<DialogueBoxProps> = ({
   closeBtnLabel,
   closeBtnVariant = "contained",
   closeOnClick,
+  width = "500px",
+  height = "auto",
 }) => {
   if (!open) return null;
 
   return (
     <Fragment>
       <div className={styles.overlay} onClick={onClose}></div>
-      <div className={styles.dialogContainer}>
+      <div className={styles.dialogContainer} style={{ width, height }}>
         <div className={styles.dialogHeader}>
           <h2>{title}</h2>
           <button onClick={onClose} className={styles.closeButton}>

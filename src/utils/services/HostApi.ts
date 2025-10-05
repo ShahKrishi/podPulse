@@ -19,15 +19,40 @@ export const hostApi = createApi({
         method: "POST",
         body: {
           hostID: params.hostID,
-          firstName: params.firstname,
-          lastName: params.lastname,
+          firstName: params.firstName,
+          lastName: params.lastName,
           email: params.email,
           bio: params.bio,
           profileImage: params.profileImage,
         },
       }),
     }),
+
+    getHostByID: builder.query({
+      query: (params) => ({
+        url: "Host/GetById",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
+      }),
+    }),
+
+    deleteHost: builder.mutation({
+      query: (params) => ({
+        url: "Host/Delete",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetAllHostQuery, useSaveHostMutation } = hostApi;
+export const {
+  useGetAllHostQuery,
+  useSaveHostMutation,
+  useGetHostByIDQuery,
+  useDeleteHostMutation,
+} = hostApi;

@@ -2,7 +2,7 @@ import { useState } from "react";
 import DialogueBox from "../../../components/dialogBox/DialogBox";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import CustomTable from "../../../components/table/Table";
-import { useGetAllEpisodeQuery } from "../../../utils/services/Episode";
+import { useGetAllEpisodeQuery } from "../../../utils/services/EpisodeApi";
 import { formatDate } from "../../../utils/common";
 
 const Episodes: React.FC = () => {

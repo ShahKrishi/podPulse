@@ -17,17 +17,23 @@ export const episodeApi = createApi({
       query: () => ({
         url: "Episode/Upsert",
         method: "POST",
-        // body: {
-        //   hostID: params.hostID,
-        //   firstName: params.firstname,
-        //   lastName: params.lastname,
-        //   email: params.email,
-        //   bio: params.bio,
-        //   profileImage: params.profileImage,
-        // },
+      }),
+    }),
+
+    deleteEpisode: builder.mutation({
+      query: (params) => ({
+        url: "Episode/Delete",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
       }),
     }),
   }),
 });
 
-export const { useGetAllEpisodeQuery, useSaveEpisodeMutation } = episodeApi;
+export const {
+  useGetAllEpisodeQuery,
+  useSaveEpisodeMutation,
+  useDeleteEpisodeMutation,
+} = episodeApi;

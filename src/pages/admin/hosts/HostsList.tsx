@@ -5,61 +5,51 @@ import DialogueBox from "../../../components/dialogBox/DialogBox";
 import {
   useGetAllHostQuery,
   useSaveHostMutation,
+  useGetHostByIDQuery,
+  useDeleteHostMutation,
 } from "../../../utils/services/HostApi";
 import { useFormik } from "formik";
+import EditIcon from "../../../assets/icons/edit.svg";
+import DeleteIcon from "../../../assets/icons/delete.svg";
 
 const HostsList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogueOpen, setIsDialogueOpen] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const [saveHost] = useSaveHostMutation();
+  const { data, isLoading, isError, error, refetch } = useGetAllHostQuery({});
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
 
-      formik.setFieldValue("profileImage", imageUrl);
-      formik.setFieldValue("profileFile", file);
+      setFieldValue("profileImage", imageUrl);
+      setFieldValue("profileFile", file);
     }
   };
 
-  const formik = useFormik({
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      bio: "",
-      profileImage: "",
-      profileFile: null as File | null,
-    },
-    // validationSchema,
-    onSubmit: async (values, { resetForm }) => {
-      try {
-        const payload = {
-          hostID: 0,
-          FirstName: values.firstName,
-          LastName: values.lastName,
-          Email: values.email,
-          Bio: values.bio,
-          ProfileImage: values.profileImage,
-        };
+  const { data: hostById } = useGetHostByIDQuery(
+    { id: editingId },
+    { skip: !editingId }
+  );
 
-        console.log(payload);
+  const handleEdit = (row: any) => {
+    setEditingId(row.id);
+    setIsDialogueOpen(true);
+  };
 
-        await saveHost(payload).unwrap();
+  const [deleteHost] = useDeleteHostMutation();
 
-        resetForm();
-      } catch (err) {
-        console.error("Failed to save host:", err);
-      }
-    },
-  });
-
-  const { data, isLoading, isError, error } = useGetAllHostQuery({});
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleDelete = (row: any) => {
+    setDeletingId(row.id);
+    setShowDeleteConfirm(true);
   };
 
   const columns = [
@@ -67,7 +57,62 @@ const HostsList: React.FC = () => {
     { label: "Email", field: "email", align: "right" },
     { label: "Bio", field: "bio", align: "right" },
     { label: "Profile Image", field: "profileImage", align: "right" },
+    {
+      label: "",
+      field: "actions",
+      render: (row: any) => (
+        <div className="flex gap-8">
+          <button
+            onClick={() => {
+              setIsDialogueOpen(true);
+              handleEdit(row);
+            }}
+          >
+            <img src={EditIcon} alt="edit" className="w-4 h-4" />
+          </button>
+          <button onClick={() => handleDelete(row)}>
+            <img src={DeleteIcon} alt="delete" className="w-4 h-4" />
+          </button>
+        </div>
+      ),
+    },
   ];
+
+  const [saveHost] = useSaveHostMutation();
+
+  const { values, setFieldValue, handleChange, handleBlur, handleSubmit } =
+    useFormik({
+      initialValues: {
+        firstName: hostById?.firstName || "",
+        lastName: hostById?.lastName || "",
+        email: hostById?.email || "",
+        bio: hostById?.bio || "",
+        profileImage: "",
+        profileFile: null as File | null,
+      },
+      // validationSchema,
+      enableReinitialize: true,
+      onSubmit: async (values, { resetForm }) => {
+        try {
+          const payload = {
+            hostID: editingId || 0,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            bio: values.bio,
+            profileImage: values.profileFile?.name,
+          };
+
+          await saveHost(payload).unwrap();
+
+          resetForm();
+          setIsDialogueOpen(false);
+          await refetch();
+        } catch (err) {
+          console.error("Failed to save host:", err);
+        }
+      },
+    });
 
   const filteredData = (data || [])
     .map((host: any) => ({
@@ -129,64 +174,56 @@ const HostsList: React.FC = () => {
           open={isDialogueOpen}
           onClose={() => setIsDialogueOpen(false)}
           title="Add New Host"
+          closeBtnLabel="Close"
+          confirmBtnLabel="Save"
+          confirmOnClick={handleSubmit}
           closeOnClick={() => setIsDialogueOpen(false)}
+          width={"700px"}
+          height={"750px"}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start p-2">
             <label className="font-medium mt-2">First Name</label>
             <input
               type="text"
               name="firstName"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              value={values.firstName}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Enter First Name"
               className="w-full px-3 py-2 border rounded-md"
               required
             />
-            {formik.touched.firstName && formik.errors.firstName && (
-              <div className="text-red-600 text-sm">
-                {formik.errors.firstName}
-              </div>
-            )}
 
             <label className="font-medium mt-2">Last Name</label>
             <input
               type="text"
               name="lastName"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Enter Last Name"
               className="w-full px-3 py-2 border rounded-md"
               required
             />
-            {formik.touched.lastName && formik.errors.lastName && (
-              <div className="text-red-600 text-sm">
-                {formik.errors.lastName}
-              </div>
-            )}
 
             <label className="font-medium mt-2">Email</label>
             <input
               type="email"
               name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Enter Email"
               className="w-full px-3 py-2 border rounded-md"
               required
             />
-            {formik.touched.email && formik.errors.email && (
-              <div className="text-red-600 text-sm">{formik.errors.email}</div>
-            )}
 
             <label className="font-medium mt-2">Bio</label>
             <textarea
               name="bio"
-              value={formik.values.bio}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              value={values.bio}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Enter Bio"
               className="w-full px-3 py-2 border rounded-md"
               rows={4}
@@ -200,31 +237,46 @@ const HostsList: React.FC = () => {
                 onChange={handleFileChange}
                 className="w-full px-3 py-2 border rounded-md"
               />
-              {formik.values.profileImage && (
+              {values.profileImage && (
                 <img
-                  src={formik.values.profileImage}
+                  src={values.profileImage}
                   alt="Profile Preview"
                   className="mt-2 h-24 w-24 object-cover rounded-full border"
                 />
               )}
             </div>
           </div>
+        </DialogueBox>
+      )}
 
-          <div className="flex justify-end pt-4">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50"
-            >
-              {isLoading ? "Saving..." : "Save Host"}
-            </button>
+      {showDeleteConfirm && (
+        <DialogueBox
+          open={showDeleteConfirm}
+          onClose={() => setShowDeleteConfirm(false)}
+          title="Confirm Deletion"
+          closeOnClick={() => setShowDeleteConfirm(false)}
+          closeBtnLabel="Cancel"
+          confirmBtnLabel="Delete"
+          confirmOnClick={async () => {
+            try {
+              if (deletingId) {
+                console.log("delete id", deletingId);
+                await deleteHost({ id: deletingId }).unwrap();
+                setShowDeleteConfirm(false);
+                setDeletingId(null);
+                await refetch();
+              }
+            } catch (err) {
+              console.error("Failed to delete category:", err);
+            }
+          }}
+          confirmBtnVariant="contained"
+          width="500px"
+          height="250px"
+        >
+          <div className="p-4 text-md font-bold text-gray-700">
+            Are you sure you want to delete this record?
           </div>
-
-          {error && (
-            <div className="text-red-600 mt-2">
-              Failed to save host. Please try again.
-            </div>
-          )}
         </DialogueBox>
       )}
     </>
