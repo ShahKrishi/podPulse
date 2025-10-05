@@ -18,11 +18,37 @@ export const categoryApi = createApi({
         url: "Category/Upsert",
         method: "POST",
         body: {
+          id: params.id,
           name: params.name,
+        },
+      }),
+    }),
+
+    getByIdCategory: builder.query({
+      query: (params) => ({
+        url: "Category/GetById",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
+      }),
+    }),
+
+    deleteCategory: builder.mutation({
+      query: (params) => ({
+        url: "Category/Delete",
+        method: "POST",
+        body: {
+          id: params.id,
         },
       }),
     }),
   }),
 });
 
-export const { useGetAllCategoryQuery, useSaveCategoryMutation } = categoryApi;
+export const {
+  useGetAllCategoryQuery,
+  useSaveCategoryMutation,
+  useGetByIdCategoryQuery,
+  useDeleteCategoryMutation,
+} = categoryApi;

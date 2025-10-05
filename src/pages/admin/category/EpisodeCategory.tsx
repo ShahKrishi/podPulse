@@ -5,7 +5,9 @@ import CustomTable from "../../../components/table/Table";
 import {
   useGetAllCategoryQuery,
   useSaveCategoryMutation,
-} from "../../../utils/services/Category";
+  useGetByIdCategoryQuery,
+  useDeleteCategoryMutation,
+} from "../../../utils/services/CategoryApi";
 import { useFormik } from "formik";
 import EditIcon from "../../../assets/icons/edit.svg";
 import DeleteIcon from "../../../assets/icons/delete.svg";
@@ -13,6 +15,9 @@ import DeleteIcon from "../../../assets/icons/delete.svg";
 const EpisodeCategory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogueOpen, setIsDialogueOpen] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const { data, isLoading, isError, error, refetch } = useGetAllCategoryQuery(
     {}
@@ -22,12 +27,21 @@ const EpisodeCategory: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
+  const { data: categoryById } = useGetByIdCategoryQuery(
+    { id: editingId },
+    { skip: !editingId }
+  );
+
   const handleEdit = (row: any) => {
-    console.log("Edit row:", row);
+    setEditingId(row.id);
+    setIsDialogueOpen(true);
   };
 
+  const [deleteCategory] = useDeleteCategoryMutation();
+
   const handleDelete = (row: any) => {
-    console.log("Delete row:", row);
+    setDeletingId(row.id);
+    setShowDeleteConfirm(true);
   };
 
   const columns = [
@@ -55,23 +69,24 @@ const EpisodeCategory: React.FC = () => {
 
   const [saveCategory] = useSaveCategoryMutation();
 
-  const formik = useFormik({
+  const { handleChange, values, handleSubmit } = useFormik({
     initialValues: {
-      name: "",
+      name: categoryById?.name || "",
     },
     // validationSchema,
+    enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       try {
         const payload = {
+          id: editingId || 0,
           name: values.name,
         };
-
-        console.log(payload);
 
         await saveCategory(payload).unwrap();
 
         resetForm();
         setIsDialogueOpen(false);
+        setEditingId(null);
         await refetch();
       } catch (err) {
         console.error("Failed to save host:", err);
@@ -133,19 +148,52 @@ const EpisodeCategory: React.FC = () => {
           closeOnClick={() => setIsDialogueOpen(false)}
           closeBtnLabel="Close"
           confirmBtnLabel="Save"
-          confirmOnClick={formik.handleSubmit}
+          confirmOnClick={handleSubmit}
+          width={"600px"}
+          height={"250px"}
+          confirmBtnVariant="contained"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-start m-4">
             <label className="font-medium mt-2">Category Name</label>
             <input
               type="text"
               name="name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
+              value={values.name}
+              onChange={handleChange}
               placeholder="Enter Category Name"
               className="w-full px-3 py-2 border rounded-md"
               required
             />
+          </div>
+        </DialogueBox>
+      )}
+
+      {showDeleteConfirm && (
+        <DialogueBox
+          open={showDeleteConfirm}
+          onClose={() => setShowDeleteConfirm(false)}
+          title="Confirm Deletion"
+          closeOnClick={() => setShowDeleteConfirm(false)}
+          closeBtnLabel="Cancel"
+          confirmBtnLabel="Delete"
+          confirmOnClick={async () => {
+            try {
+              if (deletingId) {
+                await deleteCategory({ id: deletingId }).unwrap();
+                setShowDeleteConfirm(false);
+                setDeletingId(null);
+                await refetch();
+              }
+            } catch (err) {
+              console.error("Failed to delete category:", err);
+            }
+          }}
+          confirmBtnVariant="contained"
+          width="500px"
+          height="250px"
+        >
+          <div className="p-4 text-md font-bold text-gray-700">
+            Are you sure you want to delete this record?
           </div>
         </DialogueBox>
       )}
