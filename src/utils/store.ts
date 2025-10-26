@@ -4,12 +4,14 @@ import { authApi } from "./services/AuthApi";
 import { hostApi } from "./services/HostApi";
 import { episodeApi } from "./services/EpisodeApi";
 import { categoryApi } from "./services/CategoryApi";
+import { podcastApi } from "./services/PodcastApi";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     [authApi.reducerPath]: authApi.reducer,
     [hostApi.reducerPath]: hostApi.reducer,
+    [podcastApi.reducerPath]: podcastApi.reducer,
     [episodeApi.reducerPath]: episodeApi.reducer,
     [categoryApi.reducerPath]: categoryApi.reducer,
   },
@@ -17,6 +19,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(authApi.middleware)
       .concat(hostApi.middleware)
+      .concat(podcastApi.middleware)
       .concat(episodeApi.middleware)
       .concat(categoryApi.middleware),
 });

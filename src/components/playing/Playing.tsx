@@ -1,64 +1,69 @@
-// import Upcoming from '../../assets/images/upcoming.jpg'
-// import PlayIcon from '../../assets/icons/play-colored.svg'
-
-// interface PlayingProps {
-//     title?: string;
-//     username?: string;
-//     time?: string;
-// }
-
-// const Playing: React.FC<PlayingProps> = ({ }) => {
-//     return (
-//         <div className="m-5 p-3 border flex items-center gap-5">
-//             <img src={Upcoming} alt="" className="h-20 w-20" />
-
-//             <div className="flex flex-col">
-//                 <span>title will here</span>
-//                 <span>John Doe</span>
-//             </div>
-
-//             <button
-//                 aria-label="Play Video"
-//                 className="absolute flex items-center justify-center w-10 h-10 bg-yellow-400 border border-black rounded-full transition-all duration-300"
-//             >
-//                 <img src={PlayIcon} alt="Play" className="w-4 h-4" />
-//             </button>
-
-//         </div>
-
-//     )
-// }
-
-// export default Playing
-
-import Upcoming from '../../assets/images/upcoming.jpg'
-import PlayIcon from '../../assets/icons/play-colored.svg'
+import Upcoming from "../../assets/images/upcoming.jpg";
+import PlayIcon from "../../assets/icons/play-colored.svg";
+import PauseIcon from "../../assets/icons/pause.svg";
+import NextIcon from "../../assets/icons/next.svg";
+import PrevIcon from "../../assets/icons/previous.svg";
 
 interface PlayingProps {
-    title?: string;
-    username?: string;
-    time?: string;
+  title?: string;
+  username?: string;
+  time?: string;
+  isPlaying?: boolean;
+  onPlay?: () => void;
+  onPause?: () => void;
+  onNext?: () => void;
+  onPrevious?: () => void;
 }
 
-const Playing: React.FC<PlayingProps> = ({ title, username, time }) => {
-    return (
-        <div className="relative m-5 p-3 border flex items-center gap-5">
-            <img src={Upcoming} alt="Upcoming" className="h-20 w-20 object-cover" />
+const Playing: React.FC<PlayingProps> = ({
+  title,
+  username,
+  time,
+  isPlaying = false,
+  onPlay,
+  onPause,
+  onNext,
+  onPrevious,
+}) => {
+  return (
+    <div className="relative m-5 p-3 border flex items-center gap-5">
+      <img src={Upcoming} alt="Upcoming" className="h-20 w-20 object-cover" />
 
-            <div className="flex flex-col">
-                <span>{title || "Title will be here"}</span>
-                <span>{username || "John Doe"}</span>
-                {time && <span>{time}</span>}
-            </div>
+      <div className="flex flex-col flex-grow">
+        <span className="font-semibold">{title || "Title will be here"}</span>
+        <span className="text-gray-600">{username || "John Doe"}</span>
+        {time && <span className="text-sm text-gray-500">{time}</span>}
+      </div>
 
-            <button
-                aria-label="Play Video"
-                className="absolute left-75 flex items-center justify-center w-10 h-10 bg-yellow-400 border border-black rounded-full hover:scale-105 transition-all duration-300"
-            >
-                <img src={PlayIcon} alt="Play" className="w-4 h-4" />
-            </button>
-        </div>
-    )
-}
+      <button
+        onClick={onPrevious}
+        aria-label="Previous"
+        className="flex items-center justify-center w-8 h-8 bg-gray-200 border border-black rounded-full hover:bg-gray-300 transition-all duration-200"
+      >
+        <img src={PrevIcon} alt="Previous" className="w-4 h-4" />
+      </button>
+
+      <button
+        onClick={isPlaying ? onPause : onPlay}
+        aria-label={isPlaying ? "Pause" : "Play"}
+        className="flex items-center justify-center w-10 h-10 bg-yellow-400 border border-black rounded-full hover:scale-105 transition-all duration-300"
+      >
+        <img
+          src={isPlaying ? PauseIcon : PlayIcon}
+          alt={isPlaying ? "Pause" : "Play"}
+          className="w-4 h-4"
+        />
+      </button>
+
+      <button
+        onClick={onNext}
+        aria-label="Next"
+        className="flex items-center justify-center w-8 h-8 bg-gray-200 border border-black rounded-full hover:bg-gray-300 transition-all duration-200"
+      >
+        <img src={NextIcon} alt="Next" className="w-4 h-4" />
+      </button>
+    </div>
+  );
+};
 
 export default Playing;

@@ -5,7 +5,7 @@ import CustomTable from "../../../components/table/Table";
 import { useGetAllEpisodeQuery } from "../../../utils/services/EpisodeApi";
 import { formatDate } from "../../../utils/common";
 
-const Episodes: React.FC = () => {
+const EpisodesList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDialogueOpen, setIsDialogueOpen] = useState(false);
 
@@ -85,4 +85,4 @@ const Episodes: React.FC = () => {
   );
 };
 
-export default Episodes;
+export default EpisodesList;

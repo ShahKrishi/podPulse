@@ -14,9 +14,28 @@ export const episodeApi = createApi({
     }),
 
     saveEpisode: builder.mutation({
-      query: () => ({
+      query: (params) => ({
         url: "Episode/Upsert",
         method: "POST",
+        body: {
+          id: params.id,
+          podcastId: params.podcastId,
+          title: params.title,
+          description: params.description,
+          url: params.url,
+          duration: params.duration,
+          releaseDate: params.releaseDate,
+        },
+      }),
+    }),
+
+    getByIdEpisode: builder.query({
+      query: (params) => ({
+        url: "Episode/GetById",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
       }),
     }),
 
@@ -35,5 +54,6 @@ export const episodeApi = createApi({
 export const {
   useGetAllEpisodeQuery,
   useSaveEpisodeMutation,
+  useGetByIdEpisodeQuery,
   useDeleteEpisodeMutation,
 } = episodeApi;
