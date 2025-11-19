@@ -8,3 +8,6 @@ export const ADMIN_HOSTS = "/admin-hosts";
 export const ADMIN_EPISODE_CATEGORY = "/admin-category";
 export const ADMIN_PODCAST = "/admin-podcast";
 export const ADMIN_USERS = "/admin-users";
+export const HOST_PAGE = "/host-page";
+export const PODCAST_PAGE = "/podcast-page";
+export const CONTACT_PAGE = "/contact-page";

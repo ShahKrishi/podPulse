@@ -13,8 +13,11 @@ import {
   ADMIN_PODCAST,
   ADMIN_USERS,
   ANYROUTE,
+  CONTACT_PAGE,
   HOMEPAGE,
+  HOST_PAGE,
   LOGIN,
+  PODCAST_PAGE,
   REGISTER,
 } from "./RoutesNames";
 import Hosts from "../pages/admin/hosts/HostsList";
@@ -22,6 +25,9 @@ import EpisodesList from "../pages/admin/episodes/EpisodesList";
 import EpisodeCategory from "../pages/admin/category/EpisodeCategory";
 import Podcast from "../pages/admin/podcast/Podcast";
 import Users from "../pages/admin/users/Users";
+import PodcastHomePage from "../pages/homePage/podcast/PodcastHomePage";
+import HostHomePage from "../pages/homePage/host/HostHomePage";
+import ContactUsPage from "../pages/homePage/contact/ContactUsPage";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +41,18 @@ const router = createBrowserRouter([
   {
     path: REGISTER,
     element: <Register />,
+  },
+  {
+    path: PODCAST_PAGE,
+    element: <PodcastHomePage />,
+  },
+  {
+    path: HOST_PAGE,
+    element: <HostHomePage />,
+  },
+  {
+    path: CONTACT_PAGE,
+    element: <ContactUsPage />,
   },
   // {
   //     path: '*', element: <NotFound /> }

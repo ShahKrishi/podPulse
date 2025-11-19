@@ -43,6 +43,13 @@ export const categoryApi = createApi({
         },
       }),
     }),
+
+    getCategoryDropdown: builder.query({
+      query: () => ({
+        url: "Category/Dropdown",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -51,4 +58,5 @@ export const {
   useSaveCategoryMutation,
   useGetByIdCategoryQuery,
   useDeleteCategoryMutation,
+  useGetCategoryDropdownQuery,
 } = categoryApi;

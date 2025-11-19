@@ -46,6 +46,13 @@ export const podcastApi = createApi({
         },
       }),
     }),
+
+    getPodcastDropdown: builder.query({
+      query: () => ({
+        url: "Podcast/Dropdown",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -54,4 +61,5 @@ export const {
   useSavePodcastMutation,
   useGetByIdPodcastQuery,
   useDeletePodcastMutation,
+  useGetPodcastDropdownQuery,
 } = podcastApi;

@@ -66,12 +66,12 @@ const HomePage = () => {
                   </li>
                   <li>
                     <a href="#" className="hover:text-white">
-                      Episodes
+                      Podcast
                     </a>
                   </li>
                   <li>
                     <a href="#" className="hover:text-white">
-                      Hosts
+                      Host
                     </a>
                   </li>
                   <li>
