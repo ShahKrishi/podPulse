@@ -11,6 +11,9 @@ import {
 import { useFormik } from "formik";
 import EditIcon from "../../../assets/icons/edit.svg";
 import DeleteIcon from "../../../assets/icons/delete.svg";
+import Dropdown from "../../../components/dropdown/Dropdown";
+import { useGetHostDropdownQuery } from "../../../utils/services/HostApi";
+import { useGetCategoryDropdownQuery } from "../../../utils/services/CategoryApi";
 
 const Podcast: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -44,9 +47,15 @@ const Podcast: React.FC = () => {
     setShowDeleteConfirm(true);
   };
 
+  const { data: hostDropdown } = useGetHostDropdownQuery({});
+
+  const { data: categoryDropdown } = useGetCategoryDropdownQuery({});
+
   const columns = [
     { label: "Podcast Title", field: "title" },
     { label: "Description", field: "description" },
+    { label: "Host", field: "hostName" },
+    { label: "Category", field: "categorieName" },
     {
       label: "",
       field: "actions",
@@ -70,10 +79,12 @@ const Podcast: React.FC = () => {
 
   const [savePodcast] = useSavePodcastMutation();
 
-  const { handleChange, values, handleSubmit } = useFormik({
+  const { handleChange, values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       title: podcastById?.title || "",
       description: podcastById?.description || "",
+      hostID: podcastById?.hostID || 0,
+      categorieId: podcastById?.categoryID || 0,
     },
     // validationSchema,
     enableReinitialize: true,
@@ -83,6 +94,8 @@ const Podcast: React.FC = () => {
           id: editingId || 0,
           title: values.title,
           description: values.description,
+          hostId: values.hostID,
+          categorieId: values.categorieId,
         };
 
         await savePodcast(payload).unwrap();
@@ -151,7 +164,7 @@ const Podcast: React.FC = () => {
           confirmBtnLabel="Save"
           confirmOnClick={handleSubmit}
           width={"600px"}
-          height={"300px"}
+          height={"450px"}
           confirmBtnVariant="contained"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 items-start m-4">
@@ -175,6 +188,32 @@ const Podcast: React.FC = () => {
               placeholder="Enter Description"
               className="w-full px-3 py-2 border rounded-md"
               required
+            />
+
+            <label className="font-medium mt-2">Host</label>
+            <Dropdown
+              label="Select Host"
+              options={
+                hostDropdown?.map((host: any) => ({
+                  value: host.hostID,
+                  label: host.hostName,
+                })) || []
+              }
+              value={values.hostID}
+              onChange={(val) => setFieldValue("hostID", val)}
+            />
+
+            <label className="font-medium mt-2">Category</label>
+            <Dropdown
+              label="Select Category"
+              options={
+                categoryDropdown?.map((category: any) => ({
+                  value: category.id,
+                  label: category.name,
+                })) || []
+              }
+              value={values.categorieId}
+              onChange={(val) => setFieldValue("categorieId", val)}
             />
           </div>
         </DialogueBox>
