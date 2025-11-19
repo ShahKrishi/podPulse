@@ -2,12 +2,12 @@ import { useState } from "react";
 import DialogueBox from "../../../components/dialogBox/DialogBox";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import CustomTable from "../../../components/table/Table";
-// import {
-//   useGetAllPodcastQuery,
-//   useSavePodcastMutation,
-//   useGetByIdPodcastQuery,
-//   useDeletePodcastMutation,
-// } from "../../../utils/services/PodcastApi";
+import {
+  useGetAllPodcastQuery,
+  useSavePodcastMutation,
+  useGetByIdPodcastQuery,
+  useDeletePodcastMutation,
+} from "../../../utils/services/PodcastApi";
 import { useFormik } from "formik";
 import EditIcon from "../../../assets/icons/edit.svg";
 import DeleteIcon from "../../../assets/icons/delete.svg";
@@ -19,25 +19,25 @@ const Podcast: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  //   const { data, isLoading, isError, error, refetch } = useGetAllPodcastQuery(
-  //     {}
-  //   );
+  const { data, isLoading, isError, error, refetch } = useGetAllPodcastQuery(
+    {}
+  );
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  //   const { data: podcastById } = useGetByIdPodcastQuery(
-  //     { id: editingId },
-  //     { skip: !editingId }
-  //   );
+  const { data: podcastById } = useGetByIdPodcastQuery(
+    { id: editingId },
+    { skip: !editingId }
+  );
 
   const handleEdit = (row: any) => {
     setEditingId(row.id);
     setIsDialogueOpen(true);
   };
 
-  //   const [deletePodcast] = useDeletePodcastMutation();
+  const [deletePodcast] = useDeletePodcastMutation();
 
   const handleDelete = (row: any) => {
     setDeletingId(row.id);
@@ -45,7 +45,8 @@ const Podcast: React.FC = () => {
   };
 
   const columns = [
-    { label: "Podcast Name", field: "name" },
+    { label: "Podcast Title", field: "title" },
+    { label: "Description", field: "description" },
     {
       label: "",
       field: "actions",
@@ -67,11 +68,12 @@ const Podcast: React.FC = () => {
     },
   ];
 
-  //   const [savePodcast] = useSavePodcastMutation();
+  const [savePodcast] = useSavePodcastMutation();
 
   const { handleChange, values, handleSubmit } = useFormik({
     initialValues: {
-      //   name: podcastById?.name || "",
+      title: podcastById?.title || "",
+      description: podcastById?.description || "",
     },
     // validationSchema,
     enableReinitialize: true,
@@ -79,15 +81,16 @@ const Podcast: React.FC = () => {
       try {
         const payload = {
           id: editingId || 0,
-          //   name: values.name,
+          title: values.title,
+          description: values.description,
         };
 
-        // await savePodcast(payload).unwrap();
+        await savePodcast(payload).unwrap();
 
         resetForm();
         setIsDialogueOpen(false);
         setEditingId(null);
-        // await refetch();
+        await refetch();
       } catch (err) {
         console.error("Failed to save host:", err);
       }
@@ -124,7 +127,7 @@ const Podcast: React.FC = () => {
               </button>
             </div>
 
-            {/* {isLoading ? (
+            {isLoading ? (
               <p className="text-gray-500">Loading Podcast...</p>
             ) : isError ? (
               <p className="text-red-500">
@@ -133,7 +136,7 @@ const Podcast: React.FC = () => {
               </p>
             ) : (
               <CustomTable columns={columns} data={data} />
-            )} */}
+            )}
           </div>
         </div>
       </div>
@@ -156,7 +159,7 @@ const Podcast: React.FC = () => {
             <input
               type="text"
               name="title"
-              //   value={values.title}
+              value={values.title}
               onChange={handleChange}
               placeholder="Enter Podcast Title"
               className="w-full px-3 py-2 border rounded-md"
@@ -167,7 +170,7 @@ const Podcast: React.FC = () => {
             <input
               type="text"
               name="description"
-              //   value={values.description}
+              value={values.description}
               onChange={handleChange}
               placeholder="Enter Description"
               className="w-full px-3 py-2 border rounded-md"
@@ -188,10 +191,10 @@ const Podcast: React.FC = () => {
           confirmOnClick={async () => {
             try {
               if (deletingId) {
-                // await deletePodcast({ id: deletingId }).unwrap();
+                await deletePodcast({ id: deletingId }).unwrap();
                 setShowDeleteConfirm(false);
                 setDeletingId(null);
-                // await refetch();
+                await refetch();
               }
             } catch (err) {
               console.error("Failed to delete podcast:", err);

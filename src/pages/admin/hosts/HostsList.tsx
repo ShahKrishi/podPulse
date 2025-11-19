@@ -35,25 +35,26 @@ const HostsList: React.FC = () => {
     }
   };
 
+  console.log("editing id", editingId);
   const { data: hostById } = useGetHostByIDQuery(
     { id: editingId },
     { skip: !editingId }
   );
 
   const handleEdit = (row: any) => {
-    setEditingId(row.id);
+    setEditingId(row.hostID);
     setIsDialogueOpen(true);
   };
 
   const [deleteHost] = useDeleteHostMutation();
 
   const handleDelete = (row: any) => {
-    setDeletingId(row.id);
+    setDeletingId(row.hostID);
     setShowDeleteConfirm(true);
   };
 
   const columns = [
-    { label: "Full Name", field: "fullName" },
+    { label: "Name", field: "firstName" },
     { label: "Email", field: "email", align: "right" },
     { label: "Bio", field: "bio", align: "right" },
     { label: "Profile Image", field: "profileImage", align: "right" },
@@ -80,50 +81,39 @@ const HostsList: React.FC = () => {
 
   const [saveHost] = useSaveHostMutation();
 
-  const { values, setFieldValue, handleChange, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: {
-        firstName: hostById?.firstName || "",
-        lastName: hostById?.lastName || "",
-        email: hostById?.email || "",
-        bio: hostById?.bio || "",
-        profileImage: "",
-        profileFile: null as File | null,
-      },
-      // validationSchema,
-      enableReinitialize: true,
-      onSubmit: async (values, { resetForm }) => {
-        try {
-          const payload = {
-            hostID: editingId || 0,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            email: values.email,
-            bio: values.bio,
-            profileImage: values.profileFile?.name,
-          };
+  const { values, setFieldValue, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      firstName: hostById?.firstName || "",
+      lastName: hostById?.lastName || "",
+      email: hostById?.email || "",
+      bio: hostById?.bio || "",
+      profileImage: "",
+      profileFile: null as File | null,
+    },
+    // validationSchema,
+    enableReinitialize: true,
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const payload = {
+          hostID: editingId || 0,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          bio: values.bio,
+          profileImage: values.profileFile?.name,
+        };
 
-          await saveHost(payload).unwrap();
+        await saveHost(payload).unwrap();
 
-          resetForm();
-          setIsDialogueOpen(false);
-          await refetch();
-        } catch (err) {
-          console.error("Failed to save host:", err);
-        }
-      },
-    });
-
-  const filteredData = (data || [])
-    .map((host: any) => ({
-      ...host,
-      fullName: `${host.firstName} ${host.lastName}`,
-    }))
-    .filter((host: any) =>
-      `${host.firstName} ${host.lastName}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    );
+        resetForm();
+        setIsDialogueOpen(false);
+        setEditingId(null);
+        await refetch();
+      } catch (err) {
+        console.error("Failed to save host:", err);
+      }
+    },
+  });
 
   return (
     <>
@@ -163,7 +153,7 @@ const HostsList: React.FC = () => {
                 {"message" in error ? error.message : "Failed to fetch hosts"}
               </p>
             ) : (
-              <CustomTable columns={columns} data={filteredData} />
+              <CustomTable columns={columns} data={data} />
             )}
           </div>
         </div>
@@ -173,13 +163,14 @@ const HostsList: React.FC = () => {
         <DialogueBox
           open={isDialogueOpen}
           onClose={() => setIsDialogueOpen(false)}
-          title="Add New Host"
+          title={editingId ? "Edit Host" : "Add New Host"}
           closeBtnLabel="Close"
           confirmBtnLabel="Save"
           confirmOnClick={handleSubmit}
           closeOnClick={() => setIsDialogueOpen(false)}
           width={"700px"}
-          height={"750px"}
+          height={"700px"}
+          confirmBtnVariant="contained"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start p-2">
             <label className="font-medium mt-2">First Name</label>
@@ -188,7 +179,7 @@ const HostsList: React.FC = () => {
               name="firstName"
               value={values.firstName}
               onChange={handleChange}
-              onBlur={handleBlur}
+              // onBlur={handleBlur}
               placeholder="Enter First Name"
               className="w-full px-3 py-2 border rounded-md"
               required
@@ -200,7 +191,7 @@ const HostsList: React.FC = () => {
               name="lastName"
               value={values.lastName}
               onChange={handleChange}
-              onBlur={handleBlur}
+              // onBlur={handleBlur}
               placeholder="Enter Last Name"
               className="w-full px-3 py-2 border rounded-md"
               required
@@ -212,7 +203,7 @@ const HostsList: React.FC = () => {
               name="email"
               value={values.email}
               onChange={handleChange}
-              onBlur={handleBlur}
+              // onBlur={handleBlur}
               placeholder="Enter Email"
               className="w-full px-3 py-2 border rounded-md"
               required
@@ -223,7 +214,7 @@ const HostsList: React.FC = () => {
               name="bio"
               value={values.bio}
               onChange={handleChange}
-              onBlur={handleBlur}
+              // onBlur={handleBlur}
               placeholder="Enter Bio"
               className="w-full px-3 py-2 border rounded-md"
               rows={4}
@@ -260,14 +251,13 @@ const HostsList: React.FC = () => {
           confirmOnClick={async () => {
             try {
               if (deletingId) {
-                console.log("delete id", deletingId);
                 await deleteHost({ id: deletingId }).unwrap();
                 setShowDeleteConfirm(false);
                 setDeletingId(null);
                 await refetch();
               }
             } catch (err) {
-              console.error("Failed to delete category:", err);
+              console.error("Failed to delete host:", err);
             }
           }}
           confirmBtnVariant="contained"

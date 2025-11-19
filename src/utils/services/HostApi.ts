@@ -47,6 +47,13 @@ export const hostApi = createApi({
         },
       }),
     }),
+
+    getHostDropdown: builder.query({
+      query: () => ({
+        url: "Host/Dropdown",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -55,4 +62,5 @@ export const {
   useSaveHostMutation,
   useGetHostByIDQuery,
   useDeleteHostMutation,
+  useGetHostDropdownQuery,
 } = hostApi;

@@ -2,12 +2,12 @@ import { useState } from "react";
 import DialogueBox from "../../../components/dialogBox/DialogBox";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import CustomTable from "../../../components/table/Table";
-// import {
-//   useGetAllUsersQuery,
-//   useSaveUsersMutation,
-//   useGetByIdUserQuery,
-//   useDeleteUserMutation,
-// } from "../../../utils/services/AuthApi";
+import {
+  useGetAllUsersQuery,
+  useSaveUsersMutation,
+  useGetByIdUserQuery,
+  useDeleteUserMutation,
+} from "../../../utils/services/AuthApi";
 import { useFormik } from "formik";
 import EditIcon from "../../../assets/icons/edit.svg";
 import DeleteIcon from "../../../assets/icons/delete.svg";
@@ -19,25 +19,23 @@ const Users: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  //   const { data, isLoading, isError, error, refetch } = useGetAllUsersQuery(
-  //     {}
-  //   );
+  const { data, isLoading, isError, error, refetch } = useGetAllUsersQuery({});
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  //   const { data: userById } = useGetByIdUserQuery(
-  //     { id: editingId },
-  //     { skip: !editingId }
-  //   );
+  const { data: userById } = useGetByIdUserQuery(
+    { id: editingId },
+    { skip: !editingId }
+  );
 
   const handleEdit = (row: any) => {
     setEditingId(row.id);
     setIsDialogueOpen(true);
   };
 
-  //   const [deleteUser] = useDeleteUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
 
   const handleDelete = (row: any) => {
     setDeletingId(row.id);
@@ -45,7 +43,9 @@ const Users: React.FC = () => {
   };
 
   const columns = [
-    { label: "User Name", field: "name" },
+    { label: "First Name", field: "firstName" },
+    { label: "Last Name", field: "lastName" },
+    { label: "Email", field: "email" },
     {
       label: "",
       field: "actions",
@@ -67,11 +67,14 @@ const Users: React.FC = () => {
     },
   ];
 
-  //   const [saveUser] = useSaveUsersMutation();
+  const [saveUser] = useSaveUsersMutation();
 
   const { handleChange, values, handleSubmit } = useFormik({
     initialValues: {
-      //   name: userById?.name || "",
+      firstName: userById?.firstName || "",
+      lastName: userById?.lastName || "",
+      email: userById?.email || "",
+      password: userById?.password || "",
     },
     // validationSchema,
     enableReinitialize: true,
@@ -79,15 +82,19 @@ const Users: React.FC = () => {
       try {
         const payload = {
           id: editingId || 0,
-          //   name: values.name,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          passHash: values.password,
+          role: "User",
         };
 
-        // await saveUser(payload).unwrap();
+        await saveUser(payload).unwrap();
 
         resetForm();
         setIsDialogueOpen(false);
         setEditingId(null);
-        // await refetch();
+        await refetch();
       } catch (err) {
         console.error("Failed to save host:", err);
       }
@@ -124,7 +131,7 @@ const Users: React.FC = () => {
               </button>
             </div>
 
-            {/* {isLoading ? (
+            {isLoading ? (
               <p className="text-gray-500">Loading User...</p>
             ) : isError ? (
               <p className="text-red-500">
@@ -133,7 +140,7 @@ const Users: React.FC = () => {
               </p>
             ) : (
               <CustomTable columns={columns} data={data} />
-            )} */}
+            )}
           </div>
         </div>
       </div>
@@ -156,7 +163,7 @@ const Users: React.FC = () => {
             <input
               type="text"
               name="firstName"
-              //   value={values.firstName}
+              value={values.firstName}
               onChange={handleChange}
               placeholder="Enter First Name"
               className="w-full px-3 py-2 border rounded-md"
@@ -167,7 +174,7 @@ const Users: React.FC = () => {
             <input
               type="text"
               name="lastName"
-              //   value={values.lastName}
+              value={values.lastName}
               onChange={handleChange}
               placeholder="Enter Last Name"
               className="w-full px-3 py-2 border rounded-md"
@@ -178,7 +185,7 @@ const Users: React.FC = () => {
             <input
               type="text"
               name="email"
-              //   value={values.email}
+              value={values.email}
               onChange={handleChange}
               placeholder="Enter email"
               className="w-full px-3 py-2 border rounded-md"
@@ -189,7 +196,7 @@ const Users: React.FC = () => {
             <input
               type="text"
               name="password"
-              //   value={values.password}
+              value={values.password}
               onChange={handleChange}
               placeholder="Enter Password"
               className="w-full px-3 py-2 border rounded-md"
@@ -210,10 +217,10 @@ const Users: React.FC = () => {
           confirmOnClick={async () => {
             try {
               if (deletingId) {
-                // await deleteUser({ id: deletingId }).unwrap();
+                await deleteUser({ id: deletingId }).unwrap();
                 setShowDeleteConfirm(false);
                 setDeletingId(null);
-                // await refetch();
+                await refetch();
               }
             } catch (err) {
               console.error("Failed to delete user:", err);
