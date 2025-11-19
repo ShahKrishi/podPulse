@@ -7,7 +7,7 @@ import {
   FaSignOutAlt,
   FaUserTie,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   ADMIN_DASHBOARD,
   ADMIN_EPISODE_CATEGORY,
@@ -19,42 +19,33 @@ import {
 } from "../../routes/RoutesNames";
 
 const Sidebar: React.FC = () => {
+  const location = useLocation();
+
+  const links = [
+    { icon: <FaTachometerAlt />, label: "Dashboard", route: ADMIN_DASHBOARD },
+    { icon: <FaUserTie />, label: "Hosts", route: ADMIN_HOSTS },
+    { icon: <FaTags />, label: "Categories", route: ADMIN_EPISODE_CATEGORY },
+    { icon: <FaPodcast />, label: "Podcast", route: ADMIN_PODCAST },
+    { icon: <FaUserFriends />, label: "Episodes", route: ADMIN_EPISODES },
+    { icon: <FaUserFriends />, label: "Users", route: ADMIN_USERS },
+  ];
+
   return (
     <div className="h-screen w-64 bg-gray-900 text-white flex flex-col">
-      {/* Logo Section */}
       <div className="p-6 text-2xl font-bold border-b border-gray-800">
         Admin Panel
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
-        <SidebarLink
-          icon={<FaTachometerAlt />}
-          label="Dashboard"
-          route={ADMIN_DASHBOARD}
-          active
-        />
-        <SidebarLink icon={<FaUserTie />} label="Hosts" route={ADMIN_HOSTS} />
-        <SidebarLink
-          icon={<FaTags />}
-          label="Categories"
-          route={ADMIN_EPISODE_CATEGORY}
-        />
-        <SidebarLink
-          icon={<FaPodcast />}
-          label="Podcast"
-          route={ADMIN_PODCAST}
-        />
-        <SidebarLink
-          icon={<FaUserFriends />}
-          label="Episodes"
-          route={ADMIN_EPISODES}
-        />
-
-        <SidebarLink
-          icon={<FaUserFriends />}
-          label="Users"
-          route={ADMIN_USERS}
-        />
+        {links.map((link) => (
+          <SidebarLink
+            key={link.route}
+            icon={link.icon}
+            label={link.label}
+            route={link.route}
+            active={location.pathname === link.route}
+          />
+        ))}
       </nav>
 
       <div className="p-4 border-t border-gray-800">

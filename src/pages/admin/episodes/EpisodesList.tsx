@@ -13,6 +13,8 @@ import { formatDate } from "../../../utils/common";
 import EditIcon from "../../../assets/icons/edit.svg";
 import DeleteIcon from "../../../assets/icons/delete.svg";
 import { useFormik } from "formik";
+import Dropdown from "../../../components/dropdown/Dropdown";
+import { secondsToTimeSpan } from "../../../utils/common";
 
 const EpisodesList: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -29,8 +31,7 @@ const EpisodesList: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const { data: podcastDropdownData, isLoading: isPodcastLoading } =
-    useGetPodcastDropdownQuery("");
+  const { data: podcastDropdownData } = useGetPodcastDropdownQuery({});
 
   const { data: episodeById } = useGetByIdEpisodeQuery(
     { id: editingId },
@@ -42,7 +43,7 @@ const EpisodesList: React.FC = () => {
     setIsDialogueOpen(true);
   };
 
-  const [deleteUser] = useDeleteEpisodeMutation();
+  const [deleteUser, { isLoading: isDeleting }] = useDeleteEpisodeMutation();
 
   const handleDelete = (row: any) => {
     setDeletingId(row.id);
@@ -74,7 +75,7 @@ const EpisodesList: React.FC = () => {
           >
             <img src={EditIcon} alt="edit" className="w-4 h-4" />
           </button>
-          <button onClick={() => handleDelete(row)}>
+          <button onClick={() => handleDelete(row)} disabled={isDeleting}>
             <img src={DeleteIcon} alt="delete" className="w-4 h-4" />
           </button>
         </div>
@@ -84,30 +85,53 @@ const EpisodesList: React.FC = () => {
 
   const [saveUser] = useSaveEpisodeMutation();
 
-  const { handleChange, values, handleSubmit } = useFormik({
+  const { handleChange, values, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       podcastId: episodeById?.podcasteId || "",
       title: episodeById?.title || "",
-      description: episodeById?.description,
+      description: episodeById?.description || "",
+      file: null as File | null,
+      url: "",
+      duration: 0,
     },
-    // validationSchema,
     enableReinitialize: true,
     onSubmit: async (values, { resetForm }) => {
       try {
+        let fileUrl = values.url;
+        let fileDuration = values.duration;
+
+        if (values.file) {
+          const fileName = values.file.name;
+
+          fileUrl = `/audioFiles/${fileName}`;
+
+          fileDuration = await new Promise<number>((resolve) => {
+            const audio = document.createElement("audio");
+            audio.src = URL.createObjectURL(values.file!);
+
+            audio.onloadedmetadata = () => {
+              resolve(audio.duration);
+            };
+          });
+        }
         const payload = {
           id: editingId || 0,
           title: values.title,
           description: values.description,
+          url: fileUrl,
+          duration: secondsToTimeSpan(fileDuration),
+          podcastId: values.podcastId,
         };
 
-        await saveUser(payload).unwrap();
+        console.log("payload of episode", payload);
 
+        await saveUser(payload).unwrap();
         resetForm();
         setIsDialogueOpen(false);
         setEditingId(null);
         await refetch();
       } catch (err) {
-        console.error("Failed to save host:", err);
+        console.error("Failed to save episode:", err);
       }
     },
   });
@@ -168,24 +192,18 @@ const EpisodesList: React.FC = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start p-2">
             <label className="font-medium mt-2">Podcast</label>
-            <select
-              name="podcastId"
+            <Dropdown
+              label="Select Podcast"
+              options={
+                podcastDropdownData?.map((host: any) => ({
+                  value: host.id,
+                  label: host.title,
+                })) || []
+              }
               value={values.podcastId}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              required
-            >
-              <option value="">Select Podcast</option>
-              {isPodcastLoading ? (
-                <option disabled>Loading...</option>
-              ) : (
-                podcastDropdownData?.map((podcast: any) => (
-                  <option key={podcast.id} value={podcast.id}>
-                    {podcast.title}
-                  </option>
-                ))
-              )}
-            </select>
+              onChange={(val) => setFieldValue("podcastId", val)}
+            />
+
             <label className="font-medium mt-2">Title</label>
             <input
               type="text"
@@ -205,6 +223,17 @@ const EpisodesList: React.FC = () => {
               placeholder="Enter Description"
               className="w-full px-3 py-2 border rounded-md"
               required
+            />
+
+            <label className="font-medium mt-2">Audio File (MP3)</label>
+            <input
+              type="file"
+              name="audioFile"
+              accept="audio/mp3, audio/mpeg"
+              onChange={(e) =>
+                setFieldValue("file", e.target.files?.[0] || null)
+              }
+              className="w-full px-3 py-2 border rounded-md"
             />
           </div>
         </DialogueBox>
