@@ -4,6 +4,12 @@ import styles from "./NavbarComp.module.scss";
 import Logo from "../../assets/images/logo.png";
 import CustomButton from "../button/CustomButton";
 import { useNavigate } from "react-router-dom";
+import {
+  CONTACT_PAGE,
+  HOMEPAGE,
+  HOST_PAGE,
+  PODCAST_PAGE,
+} from "../../routes/RoutesNames";
 
 const NavbarComp: React.FC = () => {
   const navigate = useNavigate();
@@ -15,10 +21,10 @@ const NavbarComp: React.FC = () => {
       </div>
 
       <div className={styles.links}>
-        <Link to="/">Home</Link>
-        <Link to="/">Podcast</Link>
-        <Link to="/">Hosts</Link>
-        <Link to="/">Contact</Link>
+        <Link to={HOMEPAGE}>Home</Link>
+        <Link to={PODCAST_PAGE}>Podcast</Link>
+        <Link to={HOST_PAGE}>Hosts</Link>
+        <Link to={CONTACT_PAGE}>Contact</Link>
         <CustomButton
           variant="contained"
           onClick={() => navigate("/login")}
