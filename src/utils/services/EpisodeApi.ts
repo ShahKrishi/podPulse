@@ -48,6 +48,16 @@ export const episodeApi = createApi({
         },
       }),
     }),
+
+    getEpisodesByPodcast: builder.query({
+      query: (params) => ({
+        url: "Episode/GetEpisodeByPodcast",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
+      }),
+    }),
   }),
 });
 
@@ -56,4 +66,5 @@ export const {
   useSaveEpisodeMutation,
   useGetByIdEpisodeQuery,
   useDeleteEpisodeMutation,
+  useGetEpisodesByPodcastQuery,
 } = episodeApi;

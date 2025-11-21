@@ -11,3 +11,5 @@ export const ADMIN_USERS = "/admin-users";
 export const HOST_PAGE = "/host-page";
 export const PODCAST_PAGE = "/podcast-page";
 export const CONTACT_PAGE = "/contact-page";
+export const PODCAST_DETAILS = "podcast-detail";
+export const HOST_DETAILS = "host-detail";
