@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import Home from "../pages/homePage/HomePage";
 import Login from "../pages/loginPage/LoginPage";
 import Register from "../pages/signupPage/SignupPage";
@@ -15,8 +15,10 @@ import {
   ANYROUTE,
   CONTACT_PAGE,
   HOMEPAGE,
+  HOST_DETAILS,
   HOST_PAGE,
   LOGIN,
+  PODCAST_DETAILS,
   PODCAST_PAGE,
   REGISTER,
 } from "./RoutesNames";
@@ -28,6 +30,8 @@ import Users from "../pages/admin/users/Users";
 import PodcastHomePage from "../pages/homePage/podcast/PodcastHomePage";
 import HostHomePage from "../pages/homePage/host/HostHomePage";
 import ContactUsPage from "../pages/homePage/contact/ContactUsPage";
+import PodcastDetailPage from "../pages/homePage/podcast/PodcastDetailPage";
+import HostDetailPage from "../pages/homePage/host/HostDetailPage";
 
 const router = createBrowserRouter([
   {
@@ -44,11 +48,31 @@ const router = createBrowserRouter([
   },
   {
     path: PODCAST_PAGE,
-    element: <PodcastHomePage />,
+    element: <Outlet />,
+    children: [
+      {
+        index: true,
+        element: <PodcastHomePage />,
+      },
+      {
+        path: `${PODCAST_DETAILS}/:podcastId`,
+        element: <PodcastDetailPage />,
+      },
+    ],
   },
   {
     path: HOST_PAGE,
-    element: <HostHomePage />,
+    element: <Outlet />,
+    children: [
+      {
+        index: true,
+        element: <HostHomePage />,
+      },
+      {
+        path: `${HOST_DETAILS}/:hostId`,
+        element: <HostDetailPage />,
+      },
+    ],
   },
   {
     path: CONTACT_PAGE,

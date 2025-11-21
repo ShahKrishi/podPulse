@@ -53,6 +53,16 @@ export const podcastApi = createApi({
         method: "POST",
       }),
     }),
+
+    getPodcastByHost: builder.query({
+      query: (params) => ({
+        url: "Podcast/GetPodcastByHost",
+        method: "POST",
+        body: {
+          id: params.id,
+        },
+      }),
+    }),
   }),
 });
 
@@ -62,4 +72,5 @@ export const {
   useGetByIdPodcastQuery,
   useDeletePodcastMutation,
   useGetPodcastDropdownQuery,
+  useGetPodcastByHostQuery,
 } = podcastApi;

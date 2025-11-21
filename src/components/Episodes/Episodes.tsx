@@ -21,8 +21,8 @@ const Episodes: React.FC = () => {
   if (isError) return <p className="text-center">Failed to load episodes.</p>;
 
   return (
-    <div className="flex gap-4 my-4 p-4 flex-wrap">
-      {episodes?.map((episode: EpisodeProps) => (
+    <div className="flex gap-4 my-4 p-4 justify-center">
+      {episodes?.slice(0, 3).map((episode: EpisodeProps) => (
         <Post
           key={episode.id}
           firstname={episode.firstname || "John"}

@@ -2,6 +2,8 @@ import Footer from "../../../components/footer/Footer";
 import NavbarComp from "../../../components/navbar/NavbarComp";
 import podcastGirl from "../../../assets/images/podcast-girl.jpg";
 import { useGetAllPodcastQuery } from "../../../utils/services/PodcastApi";
+import { useNavigate } from "react-router-dom";
+import { PODCAST_DETAILS, PODCAST_PAGE } from "../../../routes/RoutesNames";
 
 interface PodcastProps {
   id: string | number;
@@ -15,6 +17,7 @@ interface PodcastProps {
 }
 
 const PodcastHomePage = () => {
+  const navigate = useNavigate();
   const { data: episodes, isLoading, isError } = useGetAllPodcastQuery({});
 
   if (isLoading) return <div className="text-center">Loading podcasts...</div>;
@@ -88,7 +91,12 @@ const PodcastHomePage = () => {
                 {podcast.description}
               </p>
 
-              <button className="mt-3 text-black font-medium hover:underline">
+              <button
+                className="mt-3 text-black font-medium hover:underline"
+                onClick={() => {
+                  navigate(`${PODCAST_PAGE}/${PODCAST_DETAILS}/${podcast.id}`);
+                }}
+              >
                 View Details →
               </button>
             </div>
