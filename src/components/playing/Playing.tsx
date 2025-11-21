@@ -26,7 +26,7 @@ const Playing: React.FC<PlayingProps> = ({
   onPrevious,
 }) => {
   return (
-    <div className="relative m-5 p-3 border flex items-center gap-5">
+    <div className="bg-[#02C7AD] relative p-3 border flex items-center gap-5">
       <img src={Upcoming} alt="Upcoming" className="h-20 w-20 object-cover" />
 
       <div className="flex flex-col flex-grow">
@@ -38,7 +38,7 @@ const Playing: React.FC<PlayingProps> = ({
       <button
         onClick={onPrevious}
         aria-label="Previous"
-        className="flex items-center justify-center w-8 h-8 bg-gray-200 border border-black rounded-full hover:bg-gray-300 transition-all duration-200"
+        className="flex items-center justify-center w-8 h-8 bg-yellow-400 border border-black rounded-full transition-all duration-200"
       >
         <img src={PrevIcon} alt="Previous" className="w-4 h-4" />
       </button>
@@ -46,7 +46,7 @@ const Playing: React.FC<PlayingProps> = ({
       <button
         onClick={isPlaying ? onPause : onPlay}
         aria-label={isPlaying ? "Pause" : "Play"}
-        className="flex items-center justify-center w-10 h-10 bg-yellow-400 border border-black rounded-full hover:scale-105 transition-all duration-300"
+        className="flex items-center justify-center w-10 h-10 bg-yellow-400 border border-black rounded-full transition-all duration-300"
       >
         <img
           src={isPlaying ? PauseIcon : PlayIcon}
@@ -58,7 +58,7 @@ const Playing: React.FC<PlayingProps> = ({
       <button
         onClick={onNext}
         aria-label="Next"
-        className="flex items-center justify-center w-8 h-8 bg-gray-200 border border-black rounded-full hover:bg-gray-300 transition-all duration-200"
+        className="flex items-center justify-center w-8 h-8 bg-yellow-400 border border-black rounded-full transition-all duration-200"
       >
         <img src={NextIcon} alt="Next" className="w-4 h-4" />
       </button>

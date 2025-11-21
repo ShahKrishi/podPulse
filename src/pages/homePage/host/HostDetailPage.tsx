@@ -3,9 +3,12 @@ import NavbarComp from "../../../components/navbar/NavbarComp";
 import podcastGirl from "../../../assets/images/podcast-girl.jpg";
 import { useParams } from "react-router-dom";
 import { useGetPodcastByHostQuery } from "../../../utils/services/PodcastApi";
+import { useNavigate } from "react-router-dom";
+import { PODCAST_DETAILS, PODCAST_PAGE } from "../../../routes/RoutesNames";
 
 const PodcastDetail = () => {
   const { hostId } = useParams();
+  const navigate = useNavigate();
 
   const {
     data: podcastData,
@@ -73,7 +76,14 @@ const PodcastDetail = () => {
                     </p>
                   </div>
 
-                  <button className="mt-4 md:mt-0 px-6 py-2 bg-[#f4a261] text-white rounded-lg hover:bg-[#e78a28] transition">
+                  <button
+                    className="mt-4 md:mt-0 px-6 py-2 bg-[#f4a261] text-white rounded-lg hover:bg-[#e78a28] transition"
+                    onClick={() => {
+                      navigate(
+                        `${PODCAST_PAGE}/${PODCAST_DETAILS}/${episode.podcastId}`
+                      );
+                    }}
+                  >
                     Listen
                   </button>
                 </div>
