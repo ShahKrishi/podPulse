@@ -1,8 +1,11 @@
+import { useRef, useState } from "react";
 import Footer from "../../../components/footer/Footer";
 import NavbarComp from "../../../components/navbar/NavbarComp";
 import podcastGirl from "../../../assets/images/podcast-girl.jpg";
 import { useParams } from "react-router-dom";
 import { useGetEpisodesByPodcastQuery } from "../../../utils/services/EpisodeApi";
+import Playing from "../../../components/playing/Playing";
+import Dhun from "../../../assets/audio/Dhun Paryushan.mp3";
 
 interface EpisodeProps {
   episodeTitle: string;
@@ -12,6 +15,31 @@ interface EpisodeProps {
 
 const PodcastDetail = () => {
   const { podcastId } = useParams();
+
+  const [currentAudio, setCurrentAudio] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(new Audio(Dhun));
+
+  const handleListen = (audioUrl: string) => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(audioUrl);
+    }
+
+    if (audioRef.current.src !== audioUrl) {
+      audioRef.current.pause();
+      audioRef.current = new Audio(audioUrl);
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+
+    setCurrentAudio(audioUrl);
+  };
 
   const {
     data: episodeData,
@@ -64,7 +92,10 @@ const PodcastDetail = () => {
                 </p>
               </div>
 
-              <button className="mt-4 bg-black text-white px-6 py-3 rounded-lg w-max">
+              <button
+                className="mt-4 bg-black text-white px-6 py-3 rounded-lg w-max"
+                onClick={() => handleListen(Dhun)}
+              >
                 Listen Now
               </button>
             </div>
@@ -95,7 +126,10 @@ const PodcastDetail = () => {
                   Category: {episode.categoryName}
                 </p>
 
-                <button className="mt-3 text-black font-medium hover:underline">
+                <button
+                  className="mt-3 text-black font-medium hover:underline"
+                  onClick={() => handleListen(Dhun)}
+                >
                   Listen →
                 </button>
               </div>
@@ -121,8 +155,26 @@ const PodcastDetail = () => {
           </button>
         </div>
       </section>
-
       <Footer />
+      {currentAudio && (
+        <div className="fixed bottom-0 left-0 w-full z-50">
+          <Playing
+            title="Dhun Paryushan"
+            username="Podcast Artist"
+            isPlaying={isPlaying}
+            onPlay={() => {
+              audioRef.current?.play();
+              setIsPlaying(true);
+            }}
+            onPause={() => {
+              audioRef.current?.pause();
+              setIsPlaying(false);
+            }}
+            onNext={() => console.log("Next clicked")}
+            onPrevious={() => console.log("Previous clicked")}
+          />
+        </div>
+      )}
     </div>
   );
 };
