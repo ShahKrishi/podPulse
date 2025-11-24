@@ -2,6 +2,7 @@ import React from "react";
 import Post from "../post/Post";
 import Upcoming from "../../assets/images/upcoming.jpg";
 import { useGetAllEpisodeQuery } from "../../utils/services/EpisodeApi";
+import Playing from "../player/Player";
 
 interface EpisodeProps {
   id: string;
@@ -33,6 +34,7 @@ const Episodes: React.FC = () => {
           category={episode.categoryName}
           variant="default"
           time={episode.duration}
+          // playOnClick={}
         />
       ))}
     </div>

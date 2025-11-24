@@ -54,7 +54,7 @@ const HostHomePage = () => {
                 {host.firstName}
               </h2>
 
-              <p className="text-gray-600 text-center mt-3 text-sm">
+              <p className="text-gray-600 text-center mt-3 text-sm line-clamp-2">
                 {host.bio}
               </p>
 

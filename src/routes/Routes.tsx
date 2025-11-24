@@ -3,7 +3,7 @@ import Home from "../pages/homePage/HomePage";
 import Login from "../pages/loginPage/LoginPage";
 import Register from "../pages/signupPage/SignupPage";
 // import NotFound from './pages/NotFound';
-import Playing from "../components/playing/Playing";
+import Playing from "../components/player/Player";
 import Dashboard from "../pages/admin/Dashboard";
 import {
   ADMIN_DASHBOARD,

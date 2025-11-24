@@ -4,7 +4,7 @@ import NavbarComp from "../../../components/navbar/NavbarComp";
 import podcastGirl from "../../../assets/images/podcast-girl.jpg";
 import { useParams } from "react-router-dom";
 import { useGetEpisodesByPodcastQuery } from "../../../utils/services/EpisodeApi";
-import Playing from "../../../components/playing/Playing";
+import Playing from "../../../components/player/Player";
 import Dhun from "../../../assets/audio/Dhun Paryushan.mp3";
 
 interface EpisodeProps {
