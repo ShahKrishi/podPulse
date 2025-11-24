@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Post from "../post/Post";
 import Upcoming from "../../assets/images/upcoming.jpg";
 import { useGetAllEpisodeQuery } from "../../utils/services/EpisodeApi";
+import Playing from "../player/Player";
+import Dhun from "../../assets/audio/Dhun Paryushan.mp3";
 
 interface EpisodeProps {
   id: string;
@@ -15,6 +17,31 @@ interface EpisodeProps {
 }
 
 const Episodes: React.FC = () => {
+  const [currentAudio, setCurrentAudio] = useState<string | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(new Audio(Dhun));
+
+  const handleListen = (audioUrl: string) => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(audioUrl);
+    }
+
+    if (audioRef.current.src !== audioUrl) {
+      audioRef.current.pause();
+      audioRef.current = new Audio(audioUrl);
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+
+    setCurrentAudio(audioUrl);
+  };
+
   const { data: episodes, isLoading, isError } = useGetAllEpisodeQuery({});
 
   if (isLoading) return <p className="text-center">Loading episodes...</p>;
@@ -33,8 +60,31 @@ const Episodes: React.FC = () => {
           category={episode.categoryName}
           variant="default"
           time={episode.duration}
+          playOnClick={() => {
+            handleListen(Dhun);
+          }}
         />
       ))}
+
+      {currentAudio && (
+        <div className="fixed bottom-0 left-0 w-full z-50">
+          <Playing
+            title="Dhun Paryushan"
+            username="Podcast Artist"
+            isPlaying={isPlaying}
+            onPlay={() => {
+              audioRef.current?.play();
+              setIsPlaying(true);
+            }}
+            onPause={() => {
+              audioRef.current?.pause();
+              setIsPlaying(false);
+            }}
+            onNext={() => console.log("Next clicked")}
+            onPrevious={() => console.log("Previous clicked")}
+          />
+        </div>
+      )}
     </div>
   );
 };

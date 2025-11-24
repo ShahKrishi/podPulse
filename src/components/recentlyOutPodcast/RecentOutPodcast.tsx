@@ -2,6 +2,8 @@ import React from "react";
 import Polaroid from "../polaroid/Polaroid";
 import podcastGirl from "../../assets/images/podcast-girl.jpg";
 import { useGetAllPodcastQuery } from "../../utils/services/PodcastApi";
+import { useNavigate } from "react-router-dom";
+import { PODCAST_DETAILS, PODCAST_PAGE } from "../../routes/RoutesNames";
 
 interface RecentOutPodcastProps {
   id: string | number;
@@ -14,6 +16,7 @@ interface RecentOutPodcastProps {
 }
 
 const RecentOutPodcast: React.FC = () => {
+  const navigate = useNavigate();
   const { data: episodes, isLoading, isError } = useGetAllPodcastQuery({});
 
   if (isLoading) return <div className="text-center">Loading podcasts...</div>;
@@ -30,6 +33,9 @@ const RecentOutPodcast: React.FC = () => {
           on={episode.date}
           description={episode.description}
           category={episode.categorieName}
+          mainContainerOnClick={() => {
+            navigate(`${PODCAST_PAGE}/${PODCAST_DETAILS}/${episode.id}`);
+          }}
         />
       ))}
     </div>
