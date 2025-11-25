@@ -7,9 +7,12 @@ export const podcastApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getAllPodcast: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "Podcast/GetAll",
         method: "POST",
+        body: {
+          searchText: params.searchText,
+        },
       }),
     }),
 

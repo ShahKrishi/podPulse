@@ -7,9 +7,12 @@ export const categoryApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getAllCategory: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "Category/GetAll",
         method: "POST",
+        body: {
+          searchText: params.searchText,
+        },
       }),
     }),
 

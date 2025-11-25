@@ -2,7 +2,7 @@ import {
   FaApple,
   FaEnvelope,
   FaInstagram,
-  FaSpotify,
+  FaReddit,
   FaTwitter,
 } from "react-icons/fa";
 import NavbarComp from "../../../components/navbar/NavbarComp";
@@ -95,7 +95,7 @@ const ContactUsPage = () => {
 
             <div className="flex space-x-5">
               <a href="#" className="hover:text-gray-900 text-gray-700">
-                <FaSpotify size={28} />
+                <FaReddit size={28} />
               </a>
               <a href="#" className="hover:text-gray-900 text-gray-700">
                 <FaApple size={28} />

@@ -19,7 +19,9 @@ const HostsList: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const { data, isLoading, isError, error, refetch } = useGetAllHostQuery({});
+  const { data, isLoading, isError, error, refetch } = useGetAllHostQuery({
+    searchText: searchTerm,
+  });
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

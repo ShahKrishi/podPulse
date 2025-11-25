@@ -23,9 +23,9 @@ const EpisodesList: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const { data, isLoading, isError, error, refetch } = useGetAllEpisodeQuery(
-    {}
-  );
+  const { data, isLoading, isError, error, refetch } = useGetAllEpisodeQuery({
+    searchText: searchTerm,
+  });
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);

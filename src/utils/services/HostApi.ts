@@ -7,9 +7,12 @@ export const hostApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getAllHost: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "Host/GetAll",
         method: "POST",
+        body: {
+          searchText: params.searchText,
+        },
       }),
     }),
 

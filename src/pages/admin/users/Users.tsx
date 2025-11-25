@@ -19,7 +19,9 @@ const Users: React.FC = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const { data, isLoading, isError, error, refetch } = useGetAllUsersQuery({});
+  const { data, isLoading, isError, error, refetch } = useGetAllUsersQuery({
+    searchText: searchTerm,
+  });
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
