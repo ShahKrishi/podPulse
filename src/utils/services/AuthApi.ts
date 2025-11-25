@@ -31,9 +31,12 @@ export const authApi = createApi({
     }),
 
     getAllUsers: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "User/GetAll",
         method: "POST",
+        body: {
+          searchText: params.searchText,
+        },
       }),
     }),
 

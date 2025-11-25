@@ -7,9 +7,12 @@ export const episodeApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     getAllEpisode: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "Episode/GetAll",
         method: "POST",
+        body: {
+          searchText: params.searchText,
+        },
       }),
     }),
 

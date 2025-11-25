@@ -5,7 +5,7 @@ import {
   PODCAST_PAGE,
 } from "../../routes/RoutesNames";
 import {
-  FaSpotify,
+  FaReddit,
   FaApple,
   FaTwitter,
   FaInstagram,
@@ -64,7 +64,7 @@ const Footer = () => {
           <h3 className="text-lg font-semibold text-white mb-3">Connect</h3>
           <div className="flex space-x-4 mb-4">
             <a href="#" className="hover:text-white">
-              <FaSpotify size={24} />
+              <FaReddit size={24} />
             </a>
             <a href="#" className="hover:text-white">
               <FaApple size={24} />
