@@ -74,6 +74,13 @@ export const authApi = createApi({
         },
       }),
     }),
+
+    getDashboardDetails: builder.query({
+      query: () => ({
+        url: "Auth/get-dashboard-details",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -84,4 +91,5 @@ export const {
   useSaveUsersMutation,
   useGetByIdUserQuery,
   useDeleteUserMutation,
+  useGetDashboardDetailsQuery,
 } = authApi;

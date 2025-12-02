@@ -3,8 +3,8 @@ import PlayIcon from "../../assets/icons/play-colored.svg";
 import ClockIcon from "../../assets/icons/clock.svg";
 
 type PostProps = {
-  firstname: string;
-  lastname: string;
+  firstname?: string;
+  lastname?: string;
   profilePic?: string;
   image?: string;
   description?: string;
