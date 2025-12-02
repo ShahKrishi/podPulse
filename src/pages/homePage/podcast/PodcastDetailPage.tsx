@@ -6,8 +6,13 @@ import { useParams } from "react-router-dom";
 import { useGetEpisodesByPodcastQuery } from "../../../utils/services/EpisodeApi";
 import Playing from "../../../components/player/Player";
 import Dhun from "../../../assets/audio/Dhun Paryushan.mp3";
+import RiseFromWarrior from "../../../assets/audio/rise of warrior.mp3";
+import heartInHarmory from "../../../assets/audio/heart in harmony.mp3";
+import funnyBeginning from "../../../assets/audio/funnyBeginning.mp3";
+import slientWitness from "../../../assets/audio/slient witness.mp3";
 
 interface EpisodeProps {
+  id: number;
   episodeTitle: string;
   episodeDescription: string;
   categoryName: string;
@@ -15,30 +20,42 @@ interface EpisodeProps {
 
 const PodcastDetail = () => {
   const { podcastId } = useParams();
+  const numericPodcastId = Number(podcastId);
+
+  const getAudioByPodcastId = () => {
+    if (numericPodcastId === 1) return funnyBeginning;
+    if (numericPodcastId === 2) return RiseFromWarrior;
+    if (numericPodcastId === 3) return heartInHarmory;
+    if (numericPodcastId === 4) return slientWitness;
+    return Dhun;
+  };
 
   const [currentAudio, setCurrentAudio] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(new Audio(Dhun));
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [currentEpisodeTitle, setCurrentEpisodeTitle] = useState<string>("");
 
-  const handleListen = (audioUrl: string) => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio(audioUrl);
+  const handleListen = (audioUrl: string, episodeTitle: string) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
     }
 
-    if (audioRef.current.src !== audioUrl) {
-      audioRef.current.pause();
-      audioRef.current = new Audio(audioUrl);
-    }
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    if (currentAudio === audioUrl) {
+      if (isPlaying) {
+        audioRef.current?.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current?.play();
+        setIsPlaying(true);
+      }
     } else {
+      audioRef.current = new Audio(audioUrl);
       audioRef.current.play();
       setIsPlaying(true);
     }
 
     setCurrentAudio(audioUrl);
+    setCurrentEpisodeTitle(episodeTitle);
   };
 
   const {
@@ -91,10 +108,14 @@ const PodcastDetail = () => {
                   Category: {episodeData?.episodeItems[0]?.categoryName}
                 </p>
               </div>
-
               <button
                 className="mt-4 bg-black text-white px-6 py-3 rounded-lg w-max"
-                onClick={() => handleListen(Dhun)}
+                onClick={() =>
+                  handleListen(
+                    getAudioByPodcastId(),
+                    episodeData.episodeItems[0].episodeTitle
+                  )
+                }
               >
                 Listen Now
               </button>
@@ -128,7 +149,9 @@ const PodcastDetail = () => {
 
                 <button
                   className="mt-3 text-black font-medium hover:underline"
-                  onClick={() => handleListen(Dhun)}
+                  onClick={() =>
+                    handleListen(getAudioByPodcastId(), episode.episodeTitle)
+                  }
                 >
                   Listen →
                 </button>
@@ -159,8 +182,8 @@ const PodcastDetail = () => {
       {currentAudio && (
         <div className="fixed bottom-0 left-0 w-full z-50">
           <Playing
-            title="Dhun Paryushan"
-            username="Podcast Artist"
+            title={currentEpisodeTitle}
+            username=""
             isPlaying={isPlaying}
             onPlay={() => {
               audioRef.current?.play();

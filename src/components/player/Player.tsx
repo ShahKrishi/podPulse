@@ -31,7 +31,7 @@ const Playing: React.FC<PlayingProps> = ({
 
       <div className="flex flex-col flex-grow">
         <span className="font-semibold">{title || "Title will be here"}</span>
-        <span className="text-gray-600">{username || "John Doe"}</span>
+        <span className="text-gray-600">{username}</span>
         {time && <span className="text-sm text-gray-500">{time}</span>}
       </div>
 

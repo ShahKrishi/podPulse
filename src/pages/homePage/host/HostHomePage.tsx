@@ -1,9 +1,12 @@
 import Footer from "../../../components/footer/Footer";
 import NavbarComp from "../../../components/navbar/NavbarComp";
 import podcastGirl from "../../../assets/images/podcast-girl.jpg";
+import profile2 from "../../../assets/images/bharati.webp";
+import profile1 from "../../../assets/images/rohitshetty.webp";
+import profile3 from "../../../assets/images/arjun.webp";
 import { useGetAllHostQuery } from "../../../utils/services/HostApi";
-import { HOST_DETAILS, HOST_PAGE } from "../../../routes/RoutesNames";
-import { useNavigate } from "react-router-dom";
+// import { HOST_DETAILS, HOST_PAGE } from "../../../routes/RoutesNames";
+// import { useNavigate } from "react-router-dom";
 
 interface HostProps {
   hostID: string;
@@ -15,12 +18,14 @@ interface HostProps {
 }
 
 const HostHomePage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { data: hostData, isLoading, isError } = useGetAllHostQuery({});
 
   if (isLoading) return <p className="text-center">Loading hosts...</p>;
 
   if (isError) return <p className="text-center">Failed to load hosts.</p>;
+
+  const staticProfileImages = [profile1, profile2, profile3];
 
   return (
     <div className="bg-[#fdf6ec] min-h-screen flex flex-col">
@@ -37,14 +42,14 @@ const HostHomePage = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-          {hostData.map((host: HostProps) => (
+          {hostData.map((host: HostProps, index: number) => (
             <div
               key={host.hostID}
               className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center hover:shadow-lg transition cursor-pointer"
             >
               <div className="w-32 h-32 rounded-full overflow-hidden shadow mb-4">
                 <img
-                  src={host.image || podcastGirl}
+                  src={host.image || staticProfileImages[index] || podcastGirl}
                   alt={host.firstName}
                   className="w-full h-full object-cover"
                 />
@@ -58,14 +63,14 @@ const HostHomePage = () => {
                 {host.bio}
               </p>
 
-              <button
+              {/* <button
                 className="mt-5 px-6 py-2 bg-[#02C7AD] text-black font-semibold rounded-lg hover:bg-[#23877a] transition"
                 onClick={() => {
                   navigate(`${HOST_PAGE}/${HOST_DETAILS}/${host.hostID}`);
                 }}
               >
                 View Profile
-              </button>
+              </button> */}
             </div>
           ))}
         </div>

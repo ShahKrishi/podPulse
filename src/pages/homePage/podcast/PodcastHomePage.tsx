@@ -4,6 +4,10 @@ import podcastGirl from "../../../assets/images/podcast-girl.jpg";
 import { useGetAllPodcastQuery } from "../../../utils/services/PodcastApi";
 import { useNavigate } from "react-router-dom";
 import { PODCAST_DETAILS, PODCAST_PAGE } from "../../../routes/RoutesNames";
+import { useState } from "react";
+import podcast1 from "../../../assets/images/podcastBharti.png";
+import podcast2 from "../../../assets/images/podcastRohit.png";
+import podcast3 from "../../../assets/images/podcastArjun.png";
 
 interface PodcastProps {
   id: string | number;
@@ -17,8 +21,28 @@ interface PodcastProps {
 }
 
 const PodcastHomePage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const { data: episodes, isLoading, isError } = useGetAllPodcastQuery({});
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const staticThumbnailImages = [
+    podcast1,
+    podcast2,
+    podcast3,
+    podcast2,
+    podcast3,
+  ];
+
+  const {
+    data: episodes,
+    isLoading,
+    isError,
+  } = useGetAllPodcastQuery({
+    searchText: searchTerm,
+  });
 
   if (isLoading) return <div className="text-center">Loading podcasts...</div>;
   if (isError)
@@ -40,6 +64,8 @@ const PodcastHomePage = () => {
         <input
           type="text"
           placeholder="Search podcasts..."
+          onChange={handleSearch}
+          value={searchTerm}
           className="w-full max-w-xl bg-white shadow-md border border-gray-200 px-4 py-3 rounded-lg text-gray-700"
         />
       </section>
@@ -67,13 +93,13 @@ const PodcastHomePage = () => {
         <h2 className="text-2xl font-bold mb-6">Available Podcasts</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {episodes.map((podcast: PodcastProps) => (
+          {episodes.map((podcast: PodcastProps, index: number) => (
             <div
               key={podcast.id}
               className="bg-white shadow-md rounded-xl p-4 hover:shadow-lg transition cursor-pointer"
             >
               <img
-                src={podcastGirl}
+                src={staticThumbnailImages[index] || podcastGirl}
                 alt="Podcast cover"
                 className="rounded-lg h-40 w-full object-cover"
               />
