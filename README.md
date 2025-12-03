@@ -1,15 +1,24 @@
 # 🎧 PodPulse
 
-PodPulse is a simple and modern **podcast streaming website**.
+PodPulse is a simple and modern **podcast streaming website** with both **user** and **admin** sides.
 It is built using **React**, **TypeScript**, **TailwindCSS**, and **SCSS**.
-The goal of this project is to make podcast listening easy, clean, and enjoyable.
+The goal of this project is to make podcast listening easy, clean, and enjoyable — while giving admins full control to manage content.
 
 ## 🌟 What PodPulse Can Do
 
+### 👤 User Side
+
 * 🎙 Listen to podcasts with a built-in audio player
-* 🔍 Search for shows or episodes
+* 🔍 Search for podcasts or episodes
 * 🎨 Clean and modern design
 * ⚡ Fast and beginner-friendly code structure
+
+### 🛠️ Admin Side
+
+* ➕ Add, edit, or delete podcasts
+* 📂 Manage episodes and metadata
+* 🖼 Upload thumbnails and audio files
+* 📊 View and organize content for better user experience
 
 ## 🧰 Technologies Used
 
