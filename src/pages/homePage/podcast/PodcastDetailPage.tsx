@@ -5,11 +5,12 @@ import podcastGirl from "../../../assets/images/podcast-girl.jpg";
 import { useParams } from "react-router-dom";
 import { useGetEpisodesByPodcastQuery } from "../../../utils/services/EpisodeApi";
 import Playing from "../../../components/player/Player";
-import Dhun from "../../../assets/audio/Dhun Paryushan.mp3";
+// import Dhun from "../../../assets/audio/Dhun Paryushan.mp3";
 import RiseFromWarrior from "../../../assets/audio/rise of warrior.mp3";
 import heartInHarmory from "../../../assets/audio/heart in harmony.mp3";
 import funnyBeginning from "../../../assets/audio/funnyBeginning.mp3";
 import slientWitness from "../../../assets/audio/slient witness.mp3";
+import curiousMind from "../../../assets/audio/curious minds.mp3";
 
 interface EpisodeProps {
   id: number;
@@ -27,7 +28,7 @@ const PodcastDetail = () => {
     if (numericPodcastId === 2) return RiseFromWarrior;
     if (numericPodcastId === 3) return heartInHarmory;
     if (numericPodcastId === 4) return slientWitness;
-    return Dhun;
+    return curiousMind;
   };
 
   const [currentAudio, setCurrentAudio] = useState<string | null>(null);
@@ -171,7 +172,7 @@ const PodcastDetail = () => {
           <input
             type="email"
             placeholder="Enter your email"
-            className="px-4 py-3 rounded-lg w-72 text-black"
+            className="px-4 py-3 rounded-lg w-72 border"
           />
           <button className="bg-white text-black px-6 py-3 rounded-lg font-semibold">
             Subscribe

@@ -1,8 +1,8 @@
 import Upcoming from "../../assets/images/upcoming.jpg";
 import PlayIcon from "../../assets/icons/play-colored.svg";
 import PauseIcon from "../../assets/icons/pause.svg";
-import NextIcon from "../../assets/icons/next.svg";
-import PrevIcon from "../../assets/icons/previous.svg";
+// import NextIcon from "../../assets/icons/next.svg";
+// import PrevIcon from "../../assets/icons/previous.svg";
 
 interface PlayingProps {
   title?: string;
@@ -22,8 +22,8 @@ const Playing: React.FC<PlayingProps> = ({
   isPlaying = false,
   onPlay,
   onPause,
-  onNext,
-  onPrevious,
+  // onNext,
+  // onPrevious,
 }) => {
   return (
     <div className="bg-[#02C7AD] relative p-3 border flex items-center gap-5">
@@ -35,13 +35,13 @@ const Playing: React.FC<PlayingProps> = ({
         {time && <span className="text-sm text-gray-500">{time}</span>}
       </div>
 
-      <button
+      {/* <button
         onClick={onPrevious}
         aria-label="Previous"
         className="flex items-center justify-center w-8 h-8 bg-yellow-400 border border-black rounded-full transition-all duration-200"
       >
         <img src={PrevIcon} alt="Previous" className="w-4 h-4" />
-      </button>
+      </button> */}
 
       <button
         onClick={isPlaying ? onPause : onPlay}
@@ -55,13 +55,13 @@ const Playing: React.FC<PlayingProps> = ({
         />
       </button>
 
-      <button
+      {/* <button
         onClick={onNext}
         aria-label="Next"
         className="flex items-center justify-center w-8 h-8 bg-yellow-400 border border-black rounded-full transition-all duration-200"
       >
         <img src={NextIcon} alt="Next" className="w-4 h-4" />
-      </button>
+      </button> */}
     </div>
   );
 };
