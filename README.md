@@ -27,7 +27,7 @@ PodPulse delivers a clean, responsive, and fast audio-streaming experience with 
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/podpulse.git
+git clone https://github.com/ShahKrishi/podpulse.git
 cd podpulse
 ```
 
@@ -39,7 +39,9 @@ npm install
 
 ### 3️⃣ Run the local server
 
+```bash
 npm run dev
+```
 
 ## 🎨 Styling
 
