@@ -17,6 +17,10 @@ const Dashboard = () => {
       <Sidebar />
 
       <div className="flex-1 p-6">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">Hi, Admin</h1>
+          <p className="text-gray-600 mt-1">Welcome back!</p>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-white shadow-sm rounded-lg p-5 border border-gray-100 flex flex-col justify-between hover:shadow-md transition">
             <span className="text-gray-500 text-sm font-medium">
