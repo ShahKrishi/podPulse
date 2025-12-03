@@ -1,53 +1,40 @@
 # 🎧 PodPulse
 
-A modern **podcast streaming web app** built with **React**, **TypeScript (TSX)**, **TailwindCSS**, and **SCSS**.
-PodPulse delivers a clean, responsive, and fast audio-streaming experience with an intuitive UI and reusable component architecture.
+PodPulse is a simple and modern **podcast streaming website**.
+It is built using **React**, **TypeScript**, **TailwindCSS**, and **SCSS**.
+The goal of this project is to make podcast listening easy, clean, and enjoyable.
 
-## 🚀 Features
+## 🌟 What PodPulse Can Do
 
-* 🎙 **Stream Podcasts Seamlessly** — Smooth audio playback with custom player controls
-* 🔍 **Search Functionality** — Quickly find podcasts or episodes
-* 📱 **Responsive UI** — Optimized for desktop, tablet, and mobile using Tailwind
-* ⚡ **Fast & Modular** — TypeScript-powered components for reliability and scalability
-* 🎨 **Custom Styling** — Tailwind utility classes mixed with SCSS for deeper customization
-* 🔄 **Reusable Hooks & Components** — Clean folder structure and maintainable codebase
+* 🎙 Listen to podcasts with a built-in audio player
+* 🔍 Search for shows or episodes
+* 🎨 Clean and modern design
+* ⚡ Fast and beginner-friendly code structure
 
-## 🛠 Tech Stack
+## 🧰 Technologies Used
 
-| Layer                  | Technology                        |
-| ---------------------- | --------------------------------- |
-| **Frontend Framework** | React (TSX)                       |
-| **Language**           | TypeScript                        |
-| **Styling**            | TailwindCSS + SCSS                |
-| **Build Tool**         | Vite / CRA (modify accordingly)   |
-| **Audio Handling**     | Native HTML5 audio + custom hooks |
+* **React** — for building the user interface
+* **TypeScript (TSX)** — for better and safer code
+* **TailwindCSS** — for easy and responsive styling
+* **SCSS** — for custom styles when needed
 
-## 🧩 Getting Started
+## 🚀 How to Run PodPulse
 
-### 1️⃣ Clone the repository
+### 1. Download the project
 
 ```bash
 git clone https://github.com/ShahKrishi/podpulse.git
 cd podpulse
 ```
 
-### 2️⃣ Install dependencies
+### 2. Install the required packages
 
 ```bash
 npm install
 ```
 
-### 3️⃣ Run the local server
+### 3. Start the project in development mode
 
 ```bash
 npm run dev
 ```
-
-## 🎨 Styling
-
-PodPulse uses:
-
-* **TailwindCSS** for quick, responsive UI development
-* **SCSS** for custom, nested styling where utility classes aren’t enough
-
-To modify base styles, check `src/styles/` and Tailwind config.
