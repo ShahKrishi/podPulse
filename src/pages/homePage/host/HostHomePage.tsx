@@ -5,8 +5,8 @@ import profile2 from "../../../assets/images/bharati.webp";
 import profile1 from "../../../assets/images/rohitshetty.webp";
 import profile3 from "../../../assets/images/arjun.webp";
 import { useGetAllHostQuery } from "../../../utils/services/HostApi";
-// import { HOST_DETAILS, HOST_PAGE } from "../../../routes/RoutesNames";
-// import { useNavigate } from "react-router-dom";
+import { HOST_DETAILS, HOST_PAGE } from "../../../routes/RoutesNames";
+import { useNavigate } from "react-router-dom";
 
 interface HostProps {
   hostID: string;
@@ -18,7 +18,7 @@ interface HostProps {
 }
 
 const HostHomePage = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { data: hostData, isLoading, isError } = useGetAllHostQuery({});
 
   if (isLoading) return <p className="text-center">Loading hosts...</p>;
@@ -63,14 +63,14 @@ const HostHomePage = () => {
                 {host.bio}
               </p>
 
-              {/* <button
+              <button
                 className="mt-5 px-6 py-2 bg-[#02C7AD] text-black font-semibold rounded-lg hover:bg-[#23877a] transition"
                 onClick={() => {
                   navigate(`${HOST_PAGE}/${HOST_DETAILS}/${host.hostID}`);
                 }}
               >
                 View Profile
-              </button> */}
+              </button>
             </div>
           ))}
         </div>
