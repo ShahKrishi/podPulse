@@ -1,69 +1,51 @@
-# React + TypeScript + Vite
+# 🎧 PodPulse
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **podcast streaming web app** built with **React**, **TypeScript (TSX)**, **TailwindCSS**, and **SCSS**.
+PodPulse delivers a clean, responsive, and fast audio-streaming experience with an intuitive UI and reusable component architecture.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* 🎙 **Stream Podcasts Seamlessly** — Smooth audio playback with custom player controls
+* 🔍 **Search Functionality** — Quickly find podcasts or episodes
+* 📱 **Responsive UI** — Optimized for desktop, tablet, and mobile using Tailwind
+* ⚡ **Fast & Modular** — TypeScript-powered components for reliability and scalability
+* 🎨 **Custom Styling** — Tailwind utility classes mixed with SCSS for deeper customization
+* 🔄 **Reusable Hooks & Components** — Clean folder structure and maintainable codebase
 
-## Expanding the ESLint configuration
+## 🛠 Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Layer                  | Technology                        |
+| ---------------------- | --------------------------------- |
+| **Frontend Framework** | React (TSX)                       |
+| **Language**           | TypeScript                        |
+| **Styling**            | TailwindCSS + SCSS                |
+| **Build Tool**         | Vite / CRA (modify accordingly)   |
+| **Audio Handling**     | Native HTML5 audio + custom hooks |
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧩 Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### 1️⃣ Clone the repository
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/your-username/podpulse.git
+cd podpulse
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2️⃣ Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 3️⃣ Run the local server
+
+npm run dev
+
+## 🎨 Styling
+
+PodPulse uses:
+
+* **TailwindCSS** for quick, responsive UI development
+* **SCSS** for custom, nested styling where utility classes aren’t enough
+
+To modify base styles, check `src/styles/` and Tailwind config.
